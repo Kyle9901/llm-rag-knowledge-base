@@ -59,6 +59,16 @@ class RAGEngine:
             ]
         )
 
+    @staticmethod
+    def _compose_query(query: str, history: str | None = None) -> str:
+        if not history:
+            return query
+        return (
+            "请结合以下多轮对话历史理解当前问题。\n\n"
+            f"{history}\n\n"
+            f"当前问题：{query}"
+        )
+
     def get_chain(self):
         if not os.path.exists(Config.CHROMA_PERSIST_DIR):
             return None
@@ -76,13 +86,14 @@ class RAGEngine:
         self._chain = None
         self._retriever = None
 
-    def query_with_sources(self, query: str) -> dict[str, Any]:
+    def query_with_sources(self, query: str, history: str | None = None) -> dict[str, Any]:
         chain = self.get_chain()
         if chain is None:
             return {"answer": "知识库为空，请先上传文档。", "sources": [], "context": []}
 
+        effective_query = self._compose_query(query, history)
         response = chain.invoke(
-            {"input": query},
+            {"input": effective_query},
             config={"tags": ["rag", "chat"], "metadata": {"component": "RAGEngine"}},
         )
         docs = response.get("context", []) or []
@@ -93,14 +104,15 @@ class RAGEngine:
             sources.append(f"{source_name}#p{page}")
         return {"answer": response.get("answer", ""), "sources": sorted(set(sources)), "context": docs}
 
-    def stream_answer(self, query: str):
+    def stream_answer(self, query: str, history: str | None = None):
         chain = self.get_chain()
         if chain is None:
             yield "知识库为空，请先上传文档。"
             return
 
+        effective_query = self._compose_query(query, history)
         for chunk in chain.stream(
-            {"input": query},
+            {"input": effective_query},
             config={"tags": ["rag", "stream"], "metadata": {"component": "RAGEngine"}},
         ):
             if "answer" in chunk:

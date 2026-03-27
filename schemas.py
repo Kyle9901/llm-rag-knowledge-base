@@ -44,3 +44,8 @@ class ChatHistoryItem(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ChatHistoryResponse(BaseModel):
+    session_id: str
+    messages: list[ChatHistoryItem] = Field(default_factory=list)
