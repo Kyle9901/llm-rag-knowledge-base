@@ -3,14 +3,15 @@
 """
 import os
 import tempfile
-import fitz  # PyMuPDF
+from typing import List
+
+import fitz
 import pytesseract
-from PIL import Image
-from typing import List, Optional, Tuple
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_core.documents import Document
 from langchain_chroma import Chroma
+from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from PIL import Image
 
 from config import Config
 
@@ -66,36 +67,27 @@ class DocumentProcessor:
         
         return documents
     
-    def process_pdf(self, uploaded_file) -> Tuple[List[Document], str]:
+    def process_pdf_path(self, file_path: str) -> List[Document]:
         """
-        处理上传的 PDF 文件：解析文本 → OCR 兜底 → 切分
-        
-        Args:
-            uploaded_file: Streamlit UploadedFile 对象
-            
-        Returns:
-            Tuple[切分后的文档列表, 临时文件路径]
+        处理本地 PDF 文件：解析文本 -> OCR 兜底 -> 切分
         """
-        # 保存为临时文件
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            tmp_file.write(uploaded_file.getvalue())
-            tmp_file_path = tmp_file.name
-        
-        # 尝试常规提取
-        loader = PyMuPDFLoader(tmp_file_path)
+        loader = PyMuPDFLoader(file_path)
         docs = loader.load()
-        
-        # 检查是否提取到文本
+
         has_text = any(doc.page_content.strip() for doc in docs)
-        
-        # 如果常规提取失败，启动 OCR 兜底
         if not has_text:
-            docs = self.extract_text_with_ocr(tmp_file_path)
-        
-        # 切分文档
+            docs = self.extract_text_with_ocr(file_path)
+
         splits = self.text_splitter.split_documents(docs)
-        
-        return splits, tmp_file_path
+        return splits
+
+    # 兼容旧版 Streamlit 上传对象接口
+    def process_pdf(self, uploaded_file):
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+            data = uploaded_file.getvalue() if hasattr(uploaded_file, "getvalue") else uploaded_file.read()
+            tmp_file.write(data)
+            tmp_path = tmp_file.name
+        return self.process_pdf_path(tmp_path), tmp_path
     
     def add_to_vectorstore(self, documents: List[Document]) -> int:
         """
