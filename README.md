@@ -11,8 +11,6 @@
 
 ---
 
-<img width="2555" height="1310" alt="image" src="https://github.com/user-attachments/assets/fd538f5f-438a-41a9-8c80-6fc69cdc0256" />
-
 ## 📖 目录
 
 - [项目定位](#-项目定位)
@@ -51,6 +49,8 @@
 - ⏱️ **异步文档解析管线**：支持大型 PDF 文件的上传，通过 Celery 异步调度 PyMuPDF + Tesseract OCR 完成提取。
 
 ---
+
+<img width="2555" height="1310" alt="image" src="https://github.com/user-attachments/assets/fd538f5f-438a-41a9-8c80-6fc69cdc0256" />
 
 ## 🚀 版本演进
 
