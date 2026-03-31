@@ -50,7 +50,8 @@
 
 ---
 
-<img width="2555" height="1310" alt="image" src="https://github.com/user-attachments/assets/fd538f5f-438a-41a9-8c80-6fc69cdc0256" />
+<img width="1825" height="1051" alt="image" src="https://github.com/user-attachments/assets/30cd1e6f-a6df-4698-a0d5-08517eb05320" />
+
 
 ## 🚀 版本演进
 
