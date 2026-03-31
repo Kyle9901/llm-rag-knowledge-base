@@ -1,4 +1,4 @@
-# RAG Multi-Agent Backend (Production Ready)
+# RAG Multi-Agent Backend
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Version](https://img.shields.io/badge/version-2.2.0-blue)
