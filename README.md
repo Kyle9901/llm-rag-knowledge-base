@@ -11,6 +11,8 @@
 
 ---
 
+<img width="2555" height="1310" alt="image" src="https://github.com/user-attachments/assets/fd538f5f-438a-41a9-8c80-6fc69cdc0256" />
+
 ## 📖 目录
 
 - [项目定位](#-项目定位)
