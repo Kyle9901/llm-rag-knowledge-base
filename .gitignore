@@ -26,5 +26,6 @@ vector_store/
 *.log
 test_data/
 
-# 忽略 data 目录下的所有文件
-data/
+# 忽略 data 目录下的所有 pdf 文件
+data/*.pdf
+data/uploads/*.pdf
