@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+rag_backend.db
+.cursor
+agent-transcripts
+terminals
+.env
+data/uploads
+chroma_db

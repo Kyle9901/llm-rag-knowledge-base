@@ -1,0 +1,30 @@
+# 1. 虚拟环境
+venv/
+env/
+.venv/
+
+# 2. 环境变量与机密信息
+.env
+.env.*
+!.env.example
+
+# 3. Python 的编译缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 4. IDE 配置文件
+.idea/
+.vscode/
+
+# 5. 向量数据库文件
+chromadb/
+chroma_db/
+vector_store/
+
+# 6. 本地测试用的数据或日志
+*.log
+test_data/
+
+# 忽略 data 目录下的所有文件
+data/
